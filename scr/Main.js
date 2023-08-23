@@ -1,9 +1,22 @@
 import React from 'react';
 import mentalHealthImage from './logo.png';
 import './Main.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 function Main() {
   const [showMore, setShowMore] = React.useState(false);
+  
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,          // Enable autoplay
+    autoplaySpeed: 3000      // Change slide every 3 seconds
+  };
 
   return (
     <div className="main-container">
@@ -48,6 +61,32 @@ function Main() {
         {showMore ? "Show Less" : "Show More"}
       </button>
 
+      <div className="counselor-profile-container">
+        <h2>Counselor Profile</h2>
+        <Slider {...settings}>
+          <div>
+            <img src="/d1.png" alt="doctor 1" />
+            <div className="slide-text">Counselor's biography. To be refined.</div>
+          </div>
+          <div>
+            <img src="/d2.png" alt="doctor 2" />
+            <div className="slide-text">Counselor's biography. To be refined.</div>
+          </div>
+          <div>
+            <img src="/d3.png" alt="doctor 3" />
+            <div className="slide-text">Counselor's biography. To be refined.</div>
+          </div>
+          <div>
+            <img src="/d4.png" alt="doctor 4" />
+            <div className="slide-text">Counselor's biography. To be refined.</div>
+          </div>
+          <div>
+            <img src="/d5.png" alt="doctor 5" />
+            <div className="slide-text">Counselor's biography. To be refined.</div>
+          </div>
+        </Slider>
+      </div>
+      
       <h2>Resources:</h2>
       <ul className="resource-list">
         <li><a href="https://foremind.com.au/" target="_blank" rel="noopener noreferrer">Foremind - Australia's #1 Worker Wellbeing Platform</a></li>
