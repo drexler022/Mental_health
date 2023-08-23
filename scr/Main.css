@@ -76,3 +76,26 @@ h2 {
     border-radius: 5px;
     background-color: #f9f9f9;
 }
+
+.slide-container {
+    display: flex;           /* Use flex layout */
+    align-items: center;     /* Vertically center the content */
+  }
+  
+  .slide-image {
+    width: 70%;              /* Adjust as needed */
+    height: auto;
+    margin-right: 10px;      /* Space between image and text */
+  }
+  
+  .slide-text {
+    /* Additional styles for the text if needed */
+  }
+  
+  .counselor-profile-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
