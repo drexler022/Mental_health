@@ -4,6 +4,7 @@ import './Main.css';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 function Main() {
   const [showMore, setShowMore] = React.useState(false);
@@ -65,23 +66,33 @@ function Main() {
         <h2>Counselor Profile</h2>
         <Slider {...settings}>
           <div>
-            <img src="/d1.png" alt="doctor 1" />
+            <Link to="/online-consultation">  
+              <img src="/d1.png" alt="doctor 1" />
+            </Link>
             <div className="slide-text">Counselor's biography. To be refined.</div>
           </div>
           <div>
-            <img src="/d2.png" alt="doctor 2" />
+            <Link to="/online-consultation">  
+              <img src="/d2.png" alt="doctor 2" />
+            </Link>
             <div className="slide-text">Counselor's biography. To be refined.</div>
           </div>
           <div>
-            <img src="/d3.png" alt="doctor 3" />
+            <Link to="/online-consultation">  
+              <img src="/d3.png" alt="doctor 3" />
+            </Link>
             <div className="slide-text">Counselor's biography. To be refined.</div>
           </div>
           <div>
-            <img src="/d4.png" alt="doctor 4" />
+            <Link to="/online-consultation">  
+              <img src="/d4.png" alt="doctor 4" />
+            </Link>
             <div className="slide-text">Counselor's biography. To be refined.</div>
           </div>
           <div>
-            <img src="/d5.png" alt="doctor 5" />
+            <Link to="/online-consultation">  
+              <img src="/d5.png" alt="doctor 5" />
+            </Link>
             <div className="slide-text">Counselor's biography. To be refined.</div>
           </div>
         </Slider>
