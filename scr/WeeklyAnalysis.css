@@ -1,8 +1,0 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
-.weekly-analysis {
-    background: linear-gradient(to bottom, #e0f7fa, #b2ebf2); /* Gradient from light blue to a slightly darker shade */
-    padding: 20px; /* Add some padding for better appearance */
-    border-radius: 10px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Some shadow for depth */
-}
