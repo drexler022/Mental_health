@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+body {
+    background: linear-gradient(to bottom, #E6E0FA, #F3F0FF);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    padding: 30px;
+    font-family: 'Poppins', sans-serif; /* Changed font */
+    max-width: 900px;
+    margin: 20px auto;
+    line-height: 1.7;
+    background: white; /* Added background color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.header-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0; /* Separator line */
+    padding-bottom: 20px;
+}
+
+.header-section img {
+    width: 200px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.header-section h1 {
+    font-size: 2.2em;
+    margin: 0;
+    color: #333;
+}
+
+p {
+    text-align: justify;
+    margin-bottom: 25px;
+    color: #555; /* Slightly darker text */
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 40px;
+    color: #444; /* Darker heading color */
+}
+
+.resource-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.resource-list li {
+    margin: 15px 0;
+}
+
+.resource-list a {
+    color: #61dafb;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
+    padding: 8px 12px; /* Increased padding */
+    border-radius: 5px;
+    background: rgba(97, 218, 251, 0.1); /* Light background on links */
+}
+
+.resource-list a:hover {
+    color: white;
+    background-color: #61dafb;
+}
+
+.show-more-btn {
+    padding: 12px 25px; /* Increased padding */
+    background: linear-gradient(45deg, #61dafb, #4a9db7); /* Gradient background */
+    border: none;
+    border-radius: 50px; /* Rounded corners */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* Added transform transition */
+    font-weight: 600; /* Bold text */
+}
+
+.show-more-btn:hover {
+    background: linear-gradient(45deg, #4a9db7, #61dafb);
+    transform: scale(1.05); /* Slight scale on hover */
+}
+
+.more-info {
+    margin-top: 30px;
+    padding: 25px; /* Increased padding */
+    border: 1px solid #e0e0e0;
+    border-radius: 10px; /* Rounded corners */
+    background-color: #f9f9f9;
+}
+
+.counselor-profile-container {
+    padding: 20px;
+    font-family: 'Poppins', sans-serif; /* A modern font */
+    max-width: 900px;
+    margin: 20px auto;
+    line-height: 1.7;
+    text-align: center; /* Center the title */
+}
+
+/* Style for the slider container */
+.slide-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for the card */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+    transition: transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.slide-container:hover {
+    transform: translateY(-10px); /* Slight lift on hover */
+}
+
+.slide-image {
+    width: 40%;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 50%; /* Circular images */
+    object-fit: cover; /* Ensure images cover the area without distortion */
+}
+
+.slide-text {
+    flex: 1;
+    max-width: 55%;
+    text-align: left; /* Left-align the text */
+    color: #555; /* Slightly darker text */
+}
+
+.slide-text h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333; /* Darker text for the name */
+}
+
+.slide-text p {
+    margin: 0; /* Remove default margins */
+}

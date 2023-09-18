@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.online-consultation-container {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(45deg, #6C5B7B, #C06C84, #F67280);
+  height: auto;
+  padding: 40px 0;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  background: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px; /* Adjusted padding */
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: calc(100% - 30px); /* Adjusted width */
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+button {
+  padding: 12px 20px;
+  background: linear-gradient(45deg, #6C5B7B, #C06C84);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  font-weight: 600;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #C06C84, #6C5B7B);
+  transform: scale(1.05);
+}
+
+.confirmation-message {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #4CAF50;
+  background-color: #e7f3e9;
+  color: #4CAF50;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+}
