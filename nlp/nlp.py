@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from textblob import TextBlob
 
-# 展开缩写
 def expand_contractions(text):
     contractions = {
         r"you're": "you are",
@@ -61,18 +61,52 @@ def expand_contractions(text):
         text = re.sub(contraction, expansion, text, flags=re.IGNORECASE)
     return text
 
-with open('asrOutput_2.json', 'r') as file:
-    data = json.load(file)
 
-transcripts = [item['transcript'] for item in data['results']['transcripts']]
-transcripts = [expand_contractions(transcript) for transcript in transcripts]
+def split_text(text, n=15):
+    length = len(text)
+    size = length // n
+    start = 0
+    pieces = []
+    for i in range(n - 1):
+        pieces.append(text[start:start + size])
+        start += size
+    pieces.append(text[start:])
+    return pieces
 
+n = 6  # You can set this to the number of sample files you have
+file_names = [f'sample{i}.json' for i in range(1, n + 1)]
+
+all_transcripts = []  # This will store transcripts from all files
+
+for file_name in file_names:
+    with open(file_name, 'r') as file:
+        data = json.load(file)
+        transcripts = [item['transcript'] for item in data['results']['transcripts']]
+        for transcript in transcripts:
+            transcript = expand_contractions(transcript)
+            segments = split_text(transcript)
+            sentiments = [TextBlob(segment).sentiment.polarity for segment in segments]
+            plt.figure(figsize=(12, 6), dpi=600)
+            plt.plot(sentiments, marker='o', linestyle='-', color='blue')
+            plt.title(f'Sentiment Progression for Transcript in {file_name}')
+            plt.xlabel('Segment')
+            plt.ylabel('Sentiment Value')
+            plt.grid(True, alpha=0.2)
+            plt.tight_layout()
+            plt.show()
+        
+        transcripts = [expand_contractions(transcript) for transcript in transcripts]
+        all_transcripts.extend(transcripts)
+
+print(all_transcripts)
+'''
 for transcript in transcripts:
     print(transcript)
 print("\n")
-
+'''
 
 stop_words = set(stopwords.words('english'))
+stop_words.add('uh')
 lemmatizer = WordNetLemmatizer()
 
 def preprocess(text):
@@ -85,57 +119,73 @@ def preprocess(text):
 
     filtered_punctuation = [word for word in filtered_words if word not in string.punctuation]
 
-    lemmatized_words = [lemmatizer.lemmatize(word, 'v') for word in filtered_punctuation]
+    lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_punctuation]
     
     return ' '.join(lemmatized_words)
 
+preprocessed_transcripts = [preprocess(t) for t in all_transcripts]
 
-preprocessed_transcripts = [preprocess(t) for t in transcripts]
-
-
+# TF
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(preprocessed_transcripts)
 
-
 feature_names = vectorizer.get_feature_names_out()
 term_frequencies = X.toarray().sum(axis=0)  
-
 
 sorted_indices = np.argsort(term_frequencies)[::-1]
 top_indices = sorted_indices[:7]
 top_term_frequencies = term_frequencies[top_indices]
 top_feature_names = [feature_names[i] for i in top_indices]
 
-
 print("Feature Names : ", feature_names)
-print("\nAfter pre-process: ", preprocessed_transcripts)
+#print("\nAfter pre-process: ", preprocessed_transcripts)
 print("\nTerm Frequencies : ", term_frequencies)
+print("\n")
 
 plt.figure(figsize=(12,6),dpi=600)
-plt.bar(top_feature_names, top_term_frequencies, color='skyblue')
+plt.bar(top_feature_names, top_term_frequencies, color='skyblue', width=0.4)
 plt.xlabel('Words')
 plt.ylabel('Frequency')
 plt.title('Top 7 Words by Frequency')
 plt.show()
 
+# TF-IDF
+tfidf_vectorizer = TfidfVectorizer()
+
+tfidf_matrix = tfidf_vectorizer.fit_transform(preprocessed_transcripts)
+
+feature_names = tfidf_vectorizer.get_feature_names_out()
+tfidf_values = tfidf_matrix.toarray().sum(axis=0)
+
+sorted_indices = np.argsort(tfidf_values)[::-1]
+top_indices = sorted_indices[:7]  
+top_tfidf_values = tfidf_values[top_indices]
+top_feature_names = [feature_names[i] for i in top_indices]
+
+plt.figure(figsize=(12, 6), dpi=600)
+plt.bar(top_feature_names, top_tfidf_values, color='blue', width=0.4)
+plt.xlabel('Words')
+plt.ylabel('TF-IDF Score')
+plt.title('Top 7 Words by TF-IDF Score')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
 with open('word_list.json', 'r') as file:
     emergency_word = json.load(file)
     
-print(emergency_word)
-
+print("emergency_word: ",emergency_word)
 
 filtered_indices = np.where(np.isin(feature_names, emergency_word))[0]
 filtered_term_frequencies = term_frequencies[filtered_indices]
 filtered_feature_names = feature_names[filtered_indices]
 
-
 sorted_idx = np.argsort(filtered_term_frequencies)[::-1]
 sorted_term_frequencies = filtered_term_frequencies[sorted_idx]
 sorted_feature_names = filtered_feature_names[sorted_idx]
 
-
 plt.figure(figsize=(12,6),dpi=600)
-plt.bar(sorted_feature_names, sorted_term_frequencies, color='coral', width=0.2)  
+plt.bar(sorted_feature_names, sorted_term_frequencies, color='coral', width=0.4)  
 plt.xlabel('Words')
 plt.ylabel('Frequency')
 plt.title('Emergency Words by Frequency')
@@ -143,22 +193,26 @@ plt.title('Emergency Words by Frequency')
 plt.tight_layout()  
 plt.show()
 
-# bigrams analysis
-vectorizer_bigrams = CountVectorizer(ngram_range=(2, 2))
-X_bigrams = vectorizer_bigrams.fit_transform(preprocessed_transcripts)
-feature_names_bigrams = vectorizer_bigrams.get_feature_names_out()
-term_frequencies_bigrams = X_bigrams.toarray().sum(axis=0)
-sorted_indices_bigrams = np.argsort(term_frequencies_bigrams)[::-1]
-top_indices_bigrams = sorted_indices_bigrams[:7]
-top_term_frequencies_bigrams = term_frequencies_bigrams[top_indices_bigrams]
-top_feature_names_bigrams = [feature_names_bigrams[i] for i in top_indices_bigrams]
+# bigrams and trigrams analysis
+ngram_ranges = [(2, 2), (3, 3)]  # Represents bi-grams and trigrams
+titles = ["Top 7 Bigrams by Frequency", "Top 7 Trigrams by Frequency"]
+labels = ["Bigrams", "Trigrams"]
 
-plt.figure(figsize=(12,6),dpi=600)
-plt.bar(top_feature_names_bigrams, top_term_frequencies_bigrams, color='green', width=0.4)
-plt.xlabel('Bigrams')
-plt.ylabel('Frequency')
-plt.title('Top 7 Bigrams by Frequency')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
+for idx, ngram_range in enumerate(ngram_ranges):
+    vectorizer = CountVectorizer(ngram_range=ngram_range)
+    X = vectorizer.fit_transform(preprocessed_transcripts)
+    feature_names = vectorizer.get_feature_names_out()
+    term_frequencies = X.toarray().sum(axis=0)
+    sorted_indices = np.argsort(term_frequencies)[::-1]
+    top_indices = sorted_indices[:7]
+    top_term_frequencies = term_frequencies[top_indices]
+    top_feature_names = [feature_names[i] for i in top_indices]
 
+    plt.figure(figsize=(12, 6), dpi=600)
+    plt.bar(top_feature_names, top_term_frequencies, color='green', width=0.4)
+    plt.xlabel(labels[idx])
+    plt.ylabel('Frequency')
+    plt.title(titles[idx])
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
