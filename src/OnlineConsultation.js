@@ -38,13 +38,20 @@ function OnlineConsultation() {
     });
 
     // Display the message
-    setMessage("Appointment made, please wait for follow up contact.");
+    setMessage(`
+  You have been invited to an online meeting.<br/>
+  Click to <a href="https://chime.aws/1508622372" target="_blank" rel="noopener noreferrer">join the meeting</a>.<br/>
+  Meeting ID: 1508622372
+`);
+
   };
 
   return (
     <div className="online-consultation-container">
       <h1>Appointment Counseling Form</h1>
-      {message && <div className="confirmation-message">{message}</div>}
+      
+      
+      {/* {message && <div className="confirmation-message">{message}</div>} */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name:</label>
@@ -78,6 +85,7 @@ function OnlineConsultation() {
           <button type="submit">Submit</button>
         </div>
       </form>
+      {message && <div className="confirmation-message" dangerouslySetInnerHTML={{ __html: message }}></div>}
     </div>
   );
 }
