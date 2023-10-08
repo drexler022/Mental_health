@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.weekly-analysis {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weekly-analysis h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+}
+
+.image-container img {
+    max-width: 50%;  /* Adjust based on your preference */
+    max-height: 150px;  /* Adjust based on your preference */
+    display: block;  /* Center the image if it's smaller than its container */
+    margin: 0 auto;  /* Center the image horizontally */
+    border-radius: 5px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
