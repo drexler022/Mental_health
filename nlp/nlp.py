@@ -9,6 +9,10 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from textblob import TextBlob
+import os
+
+if not os.path.exists('../src'):
+    os.mkdir('../src')
 
 def expand_contractions(text):
     contractions = {
@@ -93,6 +97,7 @@ for file_name in file_names:
             plt.ylabel('Sentiment Value')
             plt.grid(True, alpha=0.2)
             plt.tight_layout()
+            plt.savefig(f'../src/sentiment_{file_name}.png', dpi=600)
             plt.show()
         
         transcripts = [expand_contractions(transcript) for transcript in transcripts]
@@ -147,11 +152,11 @@ plt.bar(top_feature_names, top_term_frequencies, color='skyblue', width=0.4)
 plt.xlabel('Words')
 plt.ylabel('Frequency')
 plt.title('Top 7 Words by Frequency')
+plt.savefig('../src/frequency.png', dpi=600)
 plt.show()
 
 # TF-IDF
 tfidf_vectorizer = TfidfVectorizer()
-
 tfidf_matrix = tfidf_vectorizer.fit_transform(preprocessed_transcripts)
 
 feature_names = tfidf_vectorizer.get_feature_names_out()
@@ -169,7 +174,9 @@ plt.ylabel('TF-IDF Score')
 plt.title('Top 7 Words by TF-IDF Score')
 plt.xticks(rotation=45)
 plt.tight_layout()
+plt.savefig('../src/tfidf.png', dpi=600)
 plt.show()
+
 
 with open('word_list.json', 'r') as file:
     emergency_word = json.load(file)
@@ -191,7 +198,27 @@ plt.ylabel('Frequency')
 plt.title('Emergency Words by Frequency')
 #plt.xticks(rotation=45)  
 plt.tight_layout()  
+plt.savefig('../src/emergency word.png', dpi=600)
 plt.show()
+
+
+# Emergency Words by TF-IDF
+filtered_tfidf_indices = np.where(np.isin(feature_names, emergency_word))[0]
+filtered_tfidf_values = tfidf_values[filtered_tfidf_indices]
+
+sorted_tfidf_indices = np.argsort(filtered_tfidf_values)[::-1]
+sorted_tfidf_values = filtered_tfidf_values[sorted_tfidf_indices]
+sorted_feature_names_tfidf = feature_names[filtered_tfidf_indices][sorted_tfidf_indices]
+
+plt.figure(figsize=(12,6),dpi=600)
+plt.bar(sorted_feature_names_tfidf, sorted_tfidf_values, color='purple', width=0.4)  
+plt.xlabel('Words')
+plt.ylabel('TF-IDF Score')
+plt.title('Emergency Words by TF-IDF Score')
+plt.tight_layout()
+plt.savefig('../src/emergency word tfidf.png', dpi=600)
+plt.show()
+
 
 # bigrams and trigrams analysis
 ngram_ranges = [(2, 2), (3, 3)]  # Represents bi-grams and trigrams
@@ -215,4 +242,5 @@ for idx, ngram_range in enumerate(ngram_ranges):
     plt.title(titles[idx])
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig(f'../src/{labels[idx]}.png', dpi=600)
     plt.show()
