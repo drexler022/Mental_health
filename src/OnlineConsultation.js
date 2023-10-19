@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './OnlineConsultation.css';
 
 function OnlineConsultation() {
+  // Initial form state with fields for the appointment
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -12,8 +13,10 @@ function OnlineConsultation() {
     appointmentTime: ''   // Added
   });
 
+  // State to store the confirmation message after form submission
   const [message, setMessage] = useState('');
 
+  // Handler to update form state when input fields change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -22,6 +25,7 @@ function OnlineConsultation() {
     }));
   };
 
+  // Handler to process form data when form is submitted
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
@@ -37,7 +41,7 @@ function OnlineConsultation() {
       appointmentTime: ''
     });
 
-    // Display the message
+    // Set the confirmation message with link to the online meeting
     setMessage(`
   You have been invited to an online meeting.<br/>
   Click to <a href="https://chime.aws/1508622372" target="_blank" rel="noopener noreferrer">join the meeting</a>.<br/>
