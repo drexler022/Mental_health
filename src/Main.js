@@ -7,8 +7,10 @@ import "slick-carousel/slick/slick-theme.css";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 function Main() {
+  // State to toggle the "Show More" functionality
   const [showMore, setShowMore] = React.useState(false);
-  
+
+  // Slider settings for the Counselor Profile section
   const settings = {
     dots: true,
     infinite: true,
