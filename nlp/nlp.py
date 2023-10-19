@@ -1,3 +1,4 @@
+# Required imports
 import json
 import re
 import nltk
@@ -11,9 +12,11 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from textblob import TextBlob
 import os
 
+# Create 'src' directory if it does not exist
 if not os.path.exists('../src'):
     os.mkdir('../src')
 
+# Expand common English contractions in the text
 def expand_contractions(text):
     contractions = {
         r"you're": "you are",
@@ -65,7 +68,7 @@ def expand_contractions(text):
         text = re.sub(contraction, expansion, text, flags=re.IGNORECASE)
     return text
 
-
+# Split the text into approximately equal parts
 def split_text(text, n=15):
     length = len(text)
     size = length // n
@@ -77,15 +80,18 @@ def split_text(text, n=15):
     pieces.append(text[start:])
     return pieces
 
+# Define the number of sample files
 n = 6  # You can set this to the number of sample files you have
 file_names = [f'sample{i}.json' for i in range(1, n + 1)]
 
-all_transcripts = []  # This will store transcripts from all files
+all_transcripts = []  # # List to store all transcripts
 
+# Extract and process transcripts from each file
 for file_name in file_names:
     with open(file_name, 'r') as file:
         data = json.load(file)
         transcripts = [item['transcript'] for item in data['results']['transcripts']]
+        # Save and display the sentiment analysis graph
         for transcript in transcripts:
             transcript = expand_contractions(transcript)
             segments = split_text(transcript)
@@ -110,10 +116,12 @@ for transcript in transcripts:
 print("\n")
 '''
 
+# Define stop words and set up the lemmatizer
 stop_words = set(stopwords.words('english'))
 stop_words.add('uh')
 lemmatizer = WordNetLemmatizer()
 
+# Text preprocessing function
 def preprocess(text):
 
     words = word_tokenize(text)
@@ -128,9 +136,10 @@ def preprocess(text):
     
     return ' '.join(lemmatized_words)
 
+# Apply the preprocessing function to each transcript
 preprocessed_transcripts = [preprocess(t) for t in all_transcripts]
 
-# TF
+# Term frequency analysis
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(preprocessed_transcripts)
 
@@ -147,6 +156,7 @@ print("Feature Names : ", feature_names)
 print("\nTerm Frequencies : ", term_frequencies)
 print("\n")
 
+# Save and display the term frequency bar graph
 plt.figure(figsize=(12,6),dpi=600)
 plt.bar(top_feature_names, top_term_frequencies, color='skyblue', width=0.4)
 plt.xlabel('Words')
@@ -177,12 +187,13 @@ plt.tight_layout()
 plt.savefig('../src/tfidf.png', dpi=600)
 plt.show()
 
-
+# Load the list of emergency words
 with open('word_list.json', 'r') as file:
     emergency_word = json.load(file)
     
 print("emergency_word: ",emergency_word)
 
+# Filter for emergency words by frequency
 filtered_indices = np.where(np.isin(feature_names, emergency_word))[0]
 filtered_term_frequencies = term_frequencies[filtered_indices]
 filtered_feature_names = feature_names[filtered_indices]
